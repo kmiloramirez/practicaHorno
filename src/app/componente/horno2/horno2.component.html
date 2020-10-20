@@ -1,0 +1,116 @@
+<label >Horno 2</label>
+<form #formingresar="ngForm" (ngSubmit)="iniciarSimulacion()">
+    <div class="row">
+      <div class="col">
+        <label>Ingrese Voltaje:</label>
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Voltaje"
+          name="voltaje"
+          [(ngModel)]="voltaje"
+        />
+      </div>
+      <div class="col">
+        <label>Ingrese intervalo de tiempo:</label>
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Intevalo"
+          name="intevalo"
+          [(ngModel)]="intevalo"
+        />
+      </div>
+      <div class="col">
+        <label>Ingrese muestreo:</label>
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Muestreo"
+          name="muestreo"
+          [(ngModel)]="muestreo"
+        />
+      </div>
+      <div class="col">
+        <label>Ingrese temperatura deseada:</label>
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Temperatura deseasa"
+          name="temperaturaDeseasa"
+          [(ngModel)]="temperaturaDeseada"
+        />
+      </div>
+    </div>
+    <br />
+    <br />
+    <button mat-button class="btn btn-lg btn-primary btn-block" type="submit">
+      Simular
+    </button>
+  </form>
+  <br />
+  <br />
+  
+  <div *ngIf="simulado">
+    <button
+      mat-button
+      class="btn btn-lg btn-primary btn-block"
+      (click)="mostrar = 'grafica'"
+    >
+      Ver grafica
+    </button>
+    <button
+      mat-button
+      class="btn btn-lg btn-primary btn-block"
+      (click)="mostrar = 'tabla'"
+    >
+      Ver tabla
+    </button>
+    <button
+      mat-button
+      class="btn btn-lg btn-primary btn-block"
+      (click)="mostrar = 'nada'"
+    >
+      No mostrar
+    </button>
+  </div>
+  
+  <div [ngSwitch]="mostrar">
+    <div *ngSwitchCase="'grafica'">
+      <div class="chart-wrapper">
+        <canvas
+          baseChart
+          height="300"
+          width="500"
+          [datasets]="lineChartData"
+          [labels]="lineChartLabels"
+          [options]="lineChartOptions"
+          [colors]="lineChartColors"
+          [legend]="lineChartLegend"
+          [chartType]="lineChartType"
+          [plugins]="lineChartPlugins"
+        >
+        </canvas>
+      </div>
+    </div>
+    
+    <div *ngSwitchCase="'tabla'">
+      <table class="table">
+        <thead>
+          <tr class="table">
+            <th scope="col">Muestra</th>
+            <th scope="col">Temperatura</th>
+            <th scope="col">Voltaje</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let resultado of resultados" class="table">
+            <td>{{ resultado.intervalo }}</td>
+            <td>{{ resultado.temperatura }}</td>
+            <td>{{ resultado.voltaje }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

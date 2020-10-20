@@ -6,11 +6,15 @@ import { AppComponent } from './app.component';
 import { HornoComponent } from './componente/horno/horno.component';
 import { FormsModule } from '@angular/forms';
 import { ChartsModule } from 'ng2-charts';
+import { Horno2Component } from './componente/horno2/horno2.component';
+import { MenuComponent } from './componente/menu/menu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HornoComponent,
+    Horno2Component,
+    MenuComponent,
   ],
   imports: [
     BrowserModule,
