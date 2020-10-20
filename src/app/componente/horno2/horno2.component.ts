@@ -63,20 +63,14 @@ export class Horno2Component implements OnInit {
       { data: [0], label: 'Voltaje' },
     ];
     this.lineChartLabels = new Array<string>();
-    this.temperaturas.push(0, 0);
-    this.temperaturas.push(0, 1);
-    this.temperaturas.push(0, 2);
-    this.temperaturas.push(0, 3);
-    this.voltajes.push(this.voltaje);
-    this.voltajes.push(this.voltaje);
-    this.voltajes.push(this.voltaje);
-    this.voltajes.push(this.voltaje);
+    this.temperaturas.push(0, 0, 0, 0);
+    this.voltajes.push(this.voltaje, this.voltaje, this.voltaje, this.voltaje);
   }
   private simulacion() {
     this.mostrar = 'grafica';
-    for (let muestra = 0; muestra < this.muestreo; ++muestra) {
+    for (let muestra = 0; muestra <= this.muestreo; ++muestra) {
       const resul = new Resultado();
-      if (muestra <= 4) {
+      if (muestra <= 3) {
         resul.temperatura = 0;
         resul.intervalo = muestra;
         resul.voltaje = this.voltaje;
@@ -86,14 +80,21 @@ export class Horno2Component implements OnInit {
           this.voltajes.push(0);
           resul.voltaje = 0;
         } else {
-          this.voltajes.push(this.voltaje);
-          resul.voltaje = this.voltaje ;
+          const porcentaje = Number((this.voltaje - this.temperaturas[muestra - 1] / this.temperaturaDeseada).toFixed(4))
+          this.voltajes.push(porcentaje);
+          //this.voltajes.push(this.voltaje);
+          resul.voltaje = porcentaje;
+          //resul.voltaje = this.voltaje ;
        }
-        const tempertura = ((this.num[0] * this.voltajes[muestra - 1]) + (this.num[1] * this.voltajes[muestra - 2]))
-        + ((this.den[0] * this.temperaturas[muestra - 1]) + (this.den[1] * this.temperaturas[muestra - 2]));
+       
+        const numXVoltaje1 =Number((this.num[0] * this.voltajes[muestra - 1]).toFixed(4));
+        const numXVoltaje2 =Number((this.num[1] * this.voltajes[muestra - 2]).toFixed(4));
+        const denXTemperatura1 =Number((this.den[0] * this.temperaturas[muestra - 1]).toFixed(4));
+        const denXTemperatura2 =Number((this.den[1] * this.temperaturas[muestra - 2]).toFixed(4));
+        const tempertura = Number(((numXVoltaje1 + numXVoltaje2) + (denXTemperatura1 +  denXTemperatura2)).toFixed(4));
         resul.temperatura = tempertura;
         resul.intervalo = muestra;
-        this.temperaturas.push(tempertura, muestra);
+        this.temperaturas.push(tempertura);
         this.intervalos.push(muestra.toString());
         this.resultados.push(resul);
       }
