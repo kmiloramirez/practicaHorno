@@ -2,13 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Resultado } from './../../dto/resultado';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
-
 @Component({
-  selector: 'app-horno2',
-  templateUrl: './horno2.component.html',
-  styleUrls: ['./horno2.component.css']
+  selector: 'app-horno3',
+  templateUrl: './horno3.component.html',
+  styleUrls: ['./horno3.component.css']
 })
-export class Horno2Component implements OnInit {
+export class Horno3Component implements OnInit {
   public num = [0.0094534, 0.0094028];
   public den = [1.984, -0.9841];
   public voltaje = 0.0;
@@ -80,9 +79,11 @@ export class Horno2Component implements OnInit {
           this.voltajes.push(0);
           resul.voltaje = 0;
         } else {
-          this.voltajes.push(this.voltaje);
-          resul.voltaje = this.voltaje ;
+          const porcentaje = Number((this.voltaje - this.temperaturas[muestra - 1] / this.temperaturaDeseada).toFixed(4))
+          this.voltajes.push(porcentaje);
+          resul.voltaje = porcentaje;
        }
+       
         const numXVoltaje1 =Number((this.num[0] * this.voltajes[muestra - 1]).toFixed(4));
         const numXVoltaje2 =Number((this.num[1] * this.voltajes[muestra - 2]).toFixed(4));
         const denXTemperatura1 =Number((this.den[0] * this.temperaturas[muestra - 1]).toFixed(4));
@@ -103,5 +104,5 @@ export class Horno2Component implements OnInit {
     this.lineChartLabels = this.intervalos;
     this.simulado = true;
   }
-}
 
+}
