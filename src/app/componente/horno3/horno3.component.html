@@ -100,14 +100,18 @@
           <tr class="table">
             <th scope="col">Muestra</th>
             <th scope="col">Temperatura</th>
+            <th scope="col">Porcentaje Temperatura</th>
             <th scope="col">Voltaje</th>
+            <th scope="col">Porcentaje Voltaje</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let resultado of resultados" class="table">
             <td>{{ resultado.intervalo }}</td>
             <td>{{ resultado.temperatura }}</td>
+            <td>{{ resultado.porcentajeTempatura}}%</td>
             <td>{{ resultado.voltaje }}</td>
+            <td>{{ resultado.porcentajeVoltaje }}%</td>
           </tr>
         </tbody>
       </table>

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Resultado } from './../../dto/resultado';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
+
+const porcentajeCien = 1;
+
 @Component({
   selector: 'app-horno3',
   templateUrl: './horno3.component.html',
@@ -17,6 +20,7 @@ export class Horno3Component implements OnInit {
   public voltajes = new Array<number>();
   public intervalos = new Array<string>();
   public temperaturas = new Array<number>();
+  public temperaturaMuestra = new Array<number>();
   public resultados = new Array<Resultado>();
 
   public mostrar = 'nada';
@@ -38,6 +42,9 @@ export class Horno3Component implements OnInit {
       backgroundColor: 'rgba(255,0,0,0.3)',
       borderColor: 'red',
     },
+    {
+      borderColor: 'green',
+    }  
   ];
 
   lineChartLegend = true;
@@ -60,6 +67,7 @@ export class Horno3Component implements OnInit {
     this.lineChartData = [
       { data: [0], label: 'Temperatura' },
       { data: [0], label: 'Voltaje' },
+      { data: [0], label: 'Referencia temperatura'}
     ];
     this.lineChartLabels = new Array<string>();
     this.temperaturas.push(0, 0, 0, 0);
@@ -73,15 +81,20 @@ export class Horno3Component implements OnInit {
         resul.temperatura = 0;
         resul.intervalo = muestra;
         resul.voltaje = this.voltaje;
+        resul.porcentajeVoltaje = 100;
+        resul.porcentajeTempatura = 0;
         this.resultados.push(resul);
       } else {
         if (this.temperaturas[muestra - 1] >= this.temperaturaDeseada) {
           this.voltajes.push(0);
           resul.voltaje = 0;
+          resul.porcentajeVoltaje = 0;
         } else {
-          const porcentaje = Number((this.voltaje - this.temperaturas[muestra - 1] / this.temperaturaDeseada).toFixed(4))
-          this.voltajes.push(porcentaje);
-          resul.voltaje = porcentaje;
+          const porcentaje = Number(((this.temperaturas[muestra - 1] * porcentajeCien) / this.temperaturaDeseada).toFixed(4));
+          const nuevoVoltaje = Number((((porcentajeCien - porcentaje) * this.voltaje) / porcentajeCien).toFixed(4));
+          this.voltajes.push(nuevoVoltaje);
+          resul.voltaje = nuevoVoltaje;
+          resul.porcentajeVoltaje =Number(((nuevoVoltaje / this.voltaje) * 100).toFixed(4)) ;
        }
        
         const numXVoltaje1 =Number((this.num[0] * this.voltajes[muestra - 1]).toFixed(4));
@@ -91,7 +104,10 @@ export class Horno3Component implements OnInit {
         const tempertura = Number(((numXVoltaje1 + numXVoltaje2) + (denXTemperatura1 +  denXTemperatura2)).toFixed(4));
         resul.temperatura = tempertura;
         resul.intervalo = muestra;
+        resul.porcentajeTempatura =Number(((tempertura / this.temperaturaDeseada) * 100).toFixed(4)) ;
+        
         this.temperaturas.push(tempertura);
+        this.temperaturaMuestra.push(this.temperaturaDeseada);
         this.intervalos.push(muestra.toString());
         this.resultados.push(resul);
       }
@@ -100,6 +116,7 @@ export class Horno3Component implements OnInit {
     this.lineChartData = [
       { data: this.temperaturas, label: 'Temperatura' },
       { data: this.voltajes, label: 'Voltaje' },
+      { data: this.temperaturaMuestra, label: 'Voltaje' },
     ];
     this.lineChartLabels = this.intervalos;
     this.simulado = true;
