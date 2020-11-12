@@ -9,6 +9,7 @@ import { ChartsModule } from 'ng2-charts';
 import { Horno2Component } from './componente/horno2/horno2.component';
 import { MenuComponent } from './componente/menu/menu.component';
 import { Horno3Component } from './componente/horno3/horno3.component';
+import { Horno4Component } from './componente/horno4/horno4.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { Horno3Component } from './componente/horno3/horno3.component';
     Horno2Component,
     MenuComponent,
     Horno3Component,
+    Horno4Component,
   ],
   imports: [
     BrowserModule,
